@@ -1,0 +1,13 @@
+{
+  "name": "AntdCalendar",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "classnames": "^2.5.1",
+    "dayjs": "^1.11.11"
+  }
+}
