@@ -1,5 +1,5 @@
 {
-  "name": "keep-alive",
+  "name": "com-router-keep-alive",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "react": "^18.2.0",
-    "react-activation": "link:/Users/ink/learn&code/github-demo/react-activation",
+    "react-activation": "latest",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.1"
   }

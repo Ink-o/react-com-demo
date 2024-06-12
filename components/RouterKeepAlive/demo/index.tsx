@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react'
-import { Link, useLocation, RouterProvider, createBrowserRouter, Outlet } from 'react-router-dom'
-import KeepAliveLayout, { useKeepOutlet } from '..'
+import { Link, useLocation, RouterProvider, createHashRouter } from 'react-router-dom'
+import RouterKeepAlive, { useKeepOutlet } from '..'
 
 const Layout = () => {
   const { pathname } = useLocation()
+  console.log('pathname: ', pathname);
 
-  // 更换成这个
+  // 当前匹配到的虚拟dom
   const element = useKeepOutlet()
   return (
     <div>
       <div>当前路由：{pathname}</div>
-      {/* <Outlet /> */}
       {element}
     </div>
   )
@@ -72,14 +72,13 @@ const routes = [
   }
 ]
 
-export const router = createBrowserRouter(routes)
+export const router = createHashRouter(routes)
 
 const App = () => {
-  return <KeepAliveLayout keepPaths={[/bbb/]}>
+  // 外面包一层 KeepAliveLayout 获取组件渲染
+  return <RouterKeepAlive keepPaths={[/bbb/]}>
     <RouterProvider router={router} />
-  </KeepAliveLayout>
-
-  // return <RouterProvider router={router} />
+  </RouterKeepAlive>
 }
 
 export default App
