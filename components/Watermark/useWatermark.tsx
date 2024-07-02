@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { WatermarkProps } from '.';
 import { merge } from 'lodash-es'
-console.log('merge: ', merge);
 
 export type WatermarkOptions = Omit<WatermarkProps, 'className' | 'style' | 'children'>;
 
@@ -232,7 +231,6 @@ const useWatermark = (params: WatermarkOptions) => {
   async function drawWatermark() {
     if (!container) return
     const { base64Url, width, height } = await getCanvasData(mergedOptions)
-    console.log('base64Url: ', base64Url);
     const offsetLeft = mergedOptions.offset[0] + 'px';
     const offsetTop = mergedOptions.offset[1] + 'px';
 
@@ -257,11 +255,40 @@ const useWatermark = (params: WatermarkOptions) => {
       container.style.position = 'relative'
     }
     watermarkDiv.current?.setAttribute('style', wmStyle.trim());
+
+    if (container) {
+      mutationObserver.current?.disconnect()
+
+      mutationObserver.current = new MutationObserver((mutations) => {
+        const isChanged = mutations.some((mutation) => {
+          let flag = false
+          if (mutation.removedNodes.length) {
+            flag = Array.from(mutation.removedNodes).some((node) => node === watermarkDiv.current)
+          }
+          if (mutation.type === 'attributes' && mutation.target === watermarkDiv.current) {
+            flag = true
+          }
+          return flag
+        })
+        // 属性被更改的情况下，重新绘制
+        if (isChanged) {
+          watermarkDiv.current?.parentElement?.removeChild(watermarkDiv.current)
+          watermarkDiv.current = undefined
+          drawWatermark()
+        }
+      })
+
+      mutationObserver.current.observe(container, {
+        attributes: true,
+        childList: true,
+        subtree: true,
+      })
+    }
   }
 
   useEffect(() => {
     drawWatermark();
-  }, []);
+  }, [options]);
 
   return {
     generateWatermark: (newOptions: Partial<WatermarkOptions>) => {
