@@ -1,0 +1,16 @@
+{
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "自定义调试项目",
+      "runtimeExecutable": "canary",
+      "runtimeArgs": [
+        "--auto-open-devtools-for-tabs",
+      ],
+      "userDataDir": false,
+      "url": "http://localhost:5573",
+      "webRoot": "workspaceFolder"
+    }
+  ]
+}
